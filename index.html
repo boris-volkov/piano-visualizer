@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="style.css">
+		</style>
+	</head>
+	<body>
+		<div id="scrollSpeedSlider">
+			<div id="sliderTrack"></div>
+			<div id="sliderThumb"></div>
+		</div>
+		<canvas id	= "canvas"></canvas>
+        <script src = "listener.js"></script>
+        <script src = "canvas.js"></script>
+
+		<script src = "slider.js"></script>
+		
+		<script>
+			let cursorTimeout;
+		
+			function hideCursor() {
+			  document.body.style.cursor = 'none';
+			}
+		
+			function showCursor() {
+			  document.body.style.cursor = 'default';
+			  clearTimeout(cursorTimeout);
+			  cursorTimeout = setTimeout(hideCursor, 2000); // Adjust the duration of inactivity before hiding the cursor (in milliseconds)
+			}
+		
+			document.addEventListener('mousemove', showCursor);
+			hideCursor(); // Hide the cursor initially
+		
+			// Rest of your JavaScript code...
+		
+		  </script>
+	</body>
+</html>

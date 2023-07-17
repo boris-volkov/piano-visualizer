@@ -3,63 +3,49 @@ canvas.width = 880;
 canvas.height = 500;
 const ctx = canvas.getContext('2d'); 
 
-const scroll_speed = 1;
-const LOWEST_NOTE = 21;
+let scroll_speed = 1;
+const LOWEST_NOTE = 21; // MIDI value of the low A on the Piano
 
 let notes_down = {}; // need to be able to access them by key
 let notes_on_screen = new Set();
-
-const colormap = {
-    0: '#0000FF', // Blue
-    7: '#8130B2', // Blue-Violet
-    2: '#B86EDB', // Violet
-    9: '#FF26FF', // Red-Violet
-    4: '#FF3030', // Red
-    11: '#FF6B32', // Red-Orange
-    6: '#FFA83F', // Orange
-    1: '#FFD842', // Yellow-Orange
-    8: '#F2FF46', // Yellow
-    3: '#ACFF6E', // Yellow-Green
-    10: '#45FF45', // Green
-    5: '#00C4C4' // Blue-Green
-};
 
 function getColorByVelocity(integer, velocity) {
     const velocityExp = Math.pow(velocity, 2); // Apply exponential scaling to velocity
   
     const alpha = velocityExp / (Math.pow(127, 2)); // Calculate alpha value based on scaled velocity
+        
+    // Define the color mappings with RGBA values (using a placeholder for alpha)
+    const colorWheel = {
+        0: 'rgba(56, 95, 152, %ALPHA%)',       // Blue
+        7: 'rgba(45, 120, 176, %ALPHA%)',      // Blue-Violet
+        2: 'rgba(56, 145, 185, %ALPHA%)',      // Violet
+        9: 'rgba(85, 163, 176, %ALPHA%)',      // Red-Violet
+        4: 'rgba(125, 170, 153, %ALPHA%)',     // Red
+        11: 'rgba(165, 163, 120, %ALPHA%)',    // Red-Orange
+        6: 'rgba(194, 145, 88, %ALPHA%)',      // Orange
+        1: 'rgba(205, 120, 64, %ALPHA%)',      // Yellow-Orange
+        8: 'rgba(194, 95, 55, %ALPHA%)',       // Yellow
+        3: 'rgba(165, 77, 64, %ALPHA%)',       // Yellow-Green
+        10: 'rgba(125, 70, 87, %ALPHA%)',      // Green
+        5: 'rgba(85, 77, 120, %ALPHA%)'        // Blue-Green
+      };
+
+    // Get the color based on the integer value
+    let color = colorWheel[integer];
     
-  
-  // Define the color mappings with RGBA values (using a placeholder for alpha)
-  const colorWheel = {
-    0: 'rgba(0, 0, 255, %ALPHA%)', // Blue
-    7: 'rgba(129, 48, 178, %ALPHA%)', // Blue-Violet
-    2: 'rgba(184, 110, 219, %ALPHA%)', // Violet
-    9: 'rgba(255, 38, 255, %ALPHA%)', // Red-Violet
-    4: 'rgba(255, 48, 48, %ALPHA%)', // Red
-    11: 'rgba(255, 107, 50, %ALPHA%)', // Red-Orange
-    6: 'rgba(255, 168, 63, %ALPHA%)', // Orange
-    1: 'rgba(255, 216, 66, %ALPHA%)', // Yellow-Orange
-    8: 'rgba(242, 255, 70, %ALPHA%)', // Yellow
-    3: 'rgba(172, 255, 110, %ALPHA%)', // Yellow-Green
-    10: 'rgba(69, 255, 69, %ALPHA%)', // Green
-    5: 'rgba(0, 196, 196, %ALPHA%)' // Blue-Green
-  };
-  
-  // Get the color based on the integer value
-  let color = colorWheel[integer];
-  
-  // Replace the placeholder with the actual alpha value
-  color = color.replace('%ALPHA%', alpha);
-  
-  return color;
+    // Replace the placeholder with the actual alpha value
+    color = color.replace('%ALPHA%', alpha);
+    
+    return color;
 }
   
+let NOTE_WIDTH = (canvas.width/88)
+
 class Note {
     constructor(note, velocity) {
-        this.x = (canvas.width / 88) * (note - LOWEST_NOTE) ;
+        this.width = Math.round((NOTE_WIDTH) * (velocity/64))
+        this.x = (NOTE_WIDTH) * (note - LOWEST_NOTE) + NOTE_WIDTH/2 - (this.width/2);
         this.y = canvas.height;
-        this.width = canvas.width / 88;
         this.height = 0;
         this.velocity = velocity;
         this.note = note%12;
@@ -79,8 +65,10 @@ class Note {
     }
 }
 
+let alpha = scroll_speed*0.1;
+
 function clear () {
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    ctx.fillStyle = 'rgba(0, 0, 0, %ALPHA%)'.replace('%ALPHA%', alpha);
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.globalAlpha = 1;
