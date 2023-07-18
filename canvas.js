@@ -1,13 +1,16 @@
 const canvas = document.querySelector('#canvas');
-canvas.width = 880;
-canvas.height = 500;
+canvas.width = 1760;
+canvas.height = 1200;
 const ctx = canvas.getContext('2d');
 
 let scroll_speed = 1;
 const LOWEST_NOTE = 21; // MIDI value of the low A on the Piano
+// I could make this an option as well for shorter keyboards, 
+// let users enter their highest and lowest key in the options.
 
 let notes_down = {}; // need to be able to access them by key
 let notes_on_screen = new Set();
+
 
 function convertHexToRgba(hex, alpha) {
     // Remove the '#' character from the hex code
@@ -22,6 +25,7 @@ function convertHexToRgba(hex, alpha) {
     return `rgba(${red}, ${green}, ${blue}, %ALPHA%)`;
 }
 
+// these keys increment by 7 mod 12, as notes on the circle of fifths
 const colorWheel = {
     0: 'rgba(56, 95, 152, %ALPHA%)',       // Blue
     7: 'rgba(45, 120, 176, %ALPHA%)',      // Blue-Violet
