@@ -1,40 +1,69 @@
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    margin: 0;
-    background-color: #111;
-    cursor: crosshair;
-    
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  background-color: #111;
+  cursor: crosshair;
+  color: #AAA;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: large;
+}
+
+input#scrollSpeedSlider{
+  width: 50vw;
+}
+
+input {
+  margin: 10px;
+}
+
+label {
+  background-color: #666;
+}
+
+div#options{
+  color: black;
+  font-weight:bolder;
+  display:flex;
+  background-color: #999;
+}
+
+div.scrollbar{
+  margin: 10px;
+}
+
+div#colorPickersContainer{
+  display: flex;
+  margin-left: 40px;
+  margin-right: 40px;
+  flex-direction: column;
+}
+
+div#colorPickersContainer div{
+  display: flex;
+}
+
+button {
+  color: #AAA;
+  background-color: #111;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: large;
+}
+
+button:hover {
+  background-color: #222;
+}
+
+button.active {
+  background-color: rgb(36, 127, 97);
+  color: white;
+}
+
+button.active:hover{
+  background-color: rgb(59, 169, 133);
 }
 
 canvas {
-    width : 100vw;
-    max-height: 95vh;
+  width: 100vw;
+  max-height: 95vh;
 }
-
-#scrollSpeedSlider {
-    width: 100%;
-    height: 20px;
-    background-color: #111;
-    border-radius: 5px;
-    position: relative;
-  }
-  
-  #sliderTrack {
-    height: 20px;
-    background-color: #111;
-  }
-  
-  #sliderThumb {
-    border: solid 1px rgb(3, 3, 3);
-    width: 16px;
-    height: 16px;
-    background-color: #111;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-  

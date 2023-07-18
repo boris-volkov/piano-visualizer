@@ -9,26 +9,26 @@ function onMIDIFailure(msg) {
 }
 
 function listInputsAndOutputs(midiAccess) {
-    for (const entry of midiAccess.inputs) {
-      const input = entry[1];
-      console.log(
-        `Input port [type:'${input.type}']` +
-          ` id:'${input.id}'` +
-          ` manufacturer:'${input.manufacturer}'` +
-          ` name:'${input.name}'` +
-          ` version:'${input.version}'`
-      );
-    }
-  
-    for (const entry of midiAccess.outputs) {
-      const output = entry[1];
-      console.log(
-        `Output port [type:'${output.type}'] id:'${output.id}' manufacturer:'${output.manufacturer}' name:'${output.name}' version:'${output.version}'`
-      );
-    }
+  for (const entry of midiAccess.inputs) {
+    const input = entry[1];
+    console.log(
+      `Input port [type:'${input.type}']` +
+      ` id:'${input.id}'` +
+      ` manufacturer:'${input.manufacturer}'` +
+      ` name:'${input.name}'` +
+      ` version:'${input.version}'`
+    );
+  }
+
+  for (const entry of midiAccess.outputs) {
+    const output = entry[1];
+    console.log(
+      `Output port [type:'${output.type}'] id:'${output.id}' manufacturer:'${output.manufacturer}' name:'${output.name}' version:'${output.version}'`
+    );
+  }
 }
 
-function logMidi(event){
+function logMidi(event) {
   let str = `MIDI message received at timestamp ${event.timeStamp}[${event.data.length} bytes]: `;
   for (const character of event.data) {
     str += `0x${character.toString(16)} `;
@@ -36,9 +36,9 @@ function logMidi(event){
 }
 
 function init(midiAccess) {
-    midi = midiAccess;
-    listInputsAndOutputs(midiAccess);
-    startLoggingMIDIInput(midiAccess);
+  midi = midiAccess;
+  listInputsAndOutputs(midiAccess);
+  startLoggingMIDIInput(midiAccess);
 }
 
 navigator.requestMIDIAccess().then(init, onMIDIFailure);
@@ -46,7 +46,7 @@ navigator.requestMIDIAccess().then(init, onMIDIFailure);
 function onMIDIMessage(event) { // default function to run on each keypress
   const [type, key, velocity] = event.data;
 
-  if (type == KEYDOWN){ 
+  if (type == KEYDOWN) {
     console.log(key);
     notes_down[key] = (new Note(key, velocity));
     console.log(notes_down[key]);
@@ -57,9 +57,9 @@ function onMIDIMessage(event) { // default function to run on each keypress
 
   }
 }
-  
+
 function startLoggingMIDIInput(midiAccess, indexOfPort) { //sets onmidimessage listener for each input 
-    midiAccess.inputs.forEach((entry) => {
-        entry.onmidimessage = onMIDIMessage;
-    });
+  midiAccess.inputs.forEach((entry) => {
+    entry.onmidimessage = onMIDIMessage;
+  });
 }
